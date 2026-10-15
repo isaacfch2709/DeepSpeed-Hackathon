@@ -7,7 +7,7 @@ import racing as R
 
 T1 = sys.argv[2]
 v_max, a_lat, a_brake = (float(a) for a in sys.argv[3:6])
-L0, KL = 0.6, 0.15
+L0, KL = 0.45, 0.10
 
 img = np.array(Image.open(f'{T1}/maps/icra26.pgm'))
 res, ox, oy = 0.05, -8.68, -1.46

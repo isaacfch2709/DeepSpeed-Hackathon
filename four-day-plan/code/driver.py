@@ -47,8 +47,8 @@ class Driver(Node):
         self.declare_parameter('a_lat', 3.0)        # [m/s^2] cornering grip used
         self.declare_parameter('a_accel', 6.0)      # [m/s^2]
         self.declare_parameter('a_brake', 4.0)      # [m/s^2]
-        self.declare_parameter('lookahead_min', 0.6)   # [m]
-        self.declare_parameter('lookahead_gain', 0.15)  # [s] lookahead grows with speed
+        self.declare_parameter('lookahead_min', 0.45)  # [m]
+        self.declare_parameter('lookahead_gain', 0.10)  # [s] lookahead grows with speed
         self.declare_parameter('safety_margin', 0.5)    # [m] LiDAR emergency brake
         p = lambda name: self.get_parameter(name).value
 
