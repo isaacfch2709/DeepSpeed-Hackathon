@@ -169,25 +169,23 @@ class Driver(Node):
         nearest = int(np.argmin(distances))
 
         # Look ahead along the ordered centerline.
-        lookahead = 0.85
+        lookahead = 1.05
         n = len(self.waypoints)
         target_idx = nearest
+        distance_along_track = 0.0
 
         for _ in range(n):
             next_idx = (target_idx + 1) % n
+
             segment = np.linalg.norm(
                 self.waypoints[next_idx] - self.waypoints[target_idx]
             )
-            if segment <= 0.0:
-                target_idx = next_idx
-                continue
 
-            if np.linalg.norm(
-                self.waypoints[target_idx] - self.waypoints[nearest]
-            ) >= lookahead:
-                break
-
+            distance_along_track += segment
             target_idx = next_idx
+
+            if distance_along_track >= lookahead:
+                break
 
         tx, ty = self.waypoints[target_idx]
 
@@ -207,11 +205,11 @@ class Driver(Node):
         steering = float(np.clip(steering, -0.418, 0.418))
 
         # Start slowly while validating the path.
-        speed = 0.7
+        speed = 5.20
         if abs(steering) > 0.20:
-            speed = 0.45
+            speed = 3.20
         if abs(steering) > 0.34:
-            speed = 0.30
+            speed = 2.05
 
         # Stop if a wall is extremely close ahead.
         front = ranges[np.abs(angles) < 0.12]
