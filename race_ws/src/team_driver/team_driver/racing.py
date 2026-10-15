@@ -53,12 +53,14 @@ def speed_profile(path, v_max, a_lat, a_accel, a_brake):
 
 def nearest_index(path, x, y, hint=None, window=60):
     """Index of the path point closest to (x, y); search near `hint` when given."""
-    if hint is None:
-        idx = np.arange(len(path))
-    else:
+    if hint is not None:
         idx = (hint + np.arange(-10, window)) % len(path)
-    d = np.hypot(path[idx, 0] - x, path[idx, 1] - y)
-    return int(idx[np.argmin(d)])
+        d = np.hypot(path[idx, 0] - x, path[idx, 1] - y)
+        if d.min() < 1.0:              # still near where we were: trust the local search
+            return int(idx[np.argmin(d)])
+    # first call, or the car is far from the last known point (reset/teleport): search everywhere
+    d = np.hypot(path[:, 0] - x, path[:, 1] - y)
+    return int(np.argmin(d))
 
 
 def pure_pursuit(path, i_near, x, y, yaw, lookahead, wheelbase):
