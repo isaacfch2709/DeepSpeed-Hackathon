@@ -67,6 +67,15 @@ class Driver(Node):
 
         # Latest known pose and speed. Ground truth from the simulator, which
         # the rules allow you to use - so use it.
+        # Load the official icra26 centerline.
+        self.waypoints = np.loadtxt(
+            '/hackathon/maps/icra26_centerline.csv',
+            delimiter=',',
+            comments='#'
+        )
+        self.waypoints = np.atleast_2d(self.waypoints)[:, :2]
+        self.last_waypoint = None
+
         self.position = None      # (x, y) in the map frame
         self.yaw = 0.0            # [rad]
         self.speed = 0.0          # [m/s]
@@ -124,7 +133,7 @@ class Driver(Node):
     # ==================================================================
     # THIS IS THE PART YOU WRITE.
     # ==================================================================
-    def plan(self, ranges, angles):
+
         """Decide what the car should do, given the latest scan.
 
         Returns `(steering, speed)`: a steering angle in radians, and a speed
@@ -144,7 +153,72 @@ class Driver(Node):
         running a policy you trained. See docs/04-algorithms.md for the
         approaches and what each one needs.
         """
-        return 0.0, self.crawl_speed
+    def plan(self, ranges, angles):
+        """Pure Pursuit using the official icra26 centerline."""
+
+        if self.position is None:
+            return 0.0, 0.0
+
+        x, y = self.position
+        yaw = self.yaw
+
+        # Find the nearest centerline waypoint.
+        dx = self.waypoints[:, 0] - x
+        dy = self.waypoints[:, 1] - y
+        distances = np.hypot(dx, dy)
+        nearest = int(np.argmin(distances))
+
+        # Look ahead along the ordered centerline.
+        lookahead = 0.85
+        n = len(self.waypoints)
+        target_idx = nearest
+
+        for _ in range(n):
+            next_idx = (target_idx + 1) % n
+            segment = np.linalg.norm(
+                self.waypoints[next_idx] - self.waypoints[target_idx]
+            )
+            if segment <= 0.0:
+                target_idx = next_idx
+                continue
+
+            if np.linalg.norm(
+                self.waypoints[target_idx] - self.waypoints[nearest]
+            ) >= lookahead:
+                break
+
+            target_idx = next_idx
+
+        tx, ty = self.waypoints[target_idx]
+
+        # Transform the target into the car's coordinate frame.
+        delta_x = tx - x
+        delta_y = ty - y
+
+        local_x = np.cos(yaw) * delta_x + np.sin(yaw) * delta_y
+        local_y = -np.sin(yaw) * delta_x + np.cos(yaw) * delta_y
+
+        ld2 = max(local_x**2 + local_y**2, 0.01)
+
+        # Bicycle-model Pure Pursuit steering.
+        wheelbase = 0.3302
+        curvature = 2.0 * local_y / ld2
+        steering = float(np.arctan(wheelbase * curvature))
+        steering = float(np.clip(steering, -0.418, 0.418))
+
+        # Start slowly while validating the path.
+        speed = 0.7
+        if abs(steering) > 0.20:
+            speed = 0.45
+        if abs(steering) > 0.34:
+            speed = 0.30
+
+        # Stop if a wall is extremely close ahead.
+        front = ranges[np.abs(angles) < 0.12]
+        if len(front) and np.min(front) < 0.35:
+            speed = 0.0
+
+        return steering, speed
 
     # ------------------------------------------------------------------
     # Output
