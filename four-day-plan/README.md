@@ -49,7 +49,7 @@ source install/local_setup.bash
 
 # Step 6, terminal 1 (inside container)
 ros2 launch roboracer_referee simulator.launch.py
-# Step 6, terminal 2: open a 2nd container shell (run ./install/linux/run.sh again)
+# Step 6, terminal 2: new host terminal, then ./install/linux/shell.sh
 cd /hackathon/race_ws && source install/local_setup.bash
 ros2 run team_driver driver
 ```
