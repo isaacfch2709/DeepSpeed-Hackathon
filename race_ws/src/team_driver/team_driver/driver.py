@@ -43,10 +43,10 @@ class Driver(Node):
         super().__init__('driver')
         # ---- tuning knobs (Day 3 is spent changing these) -------------
         self.declare_parameter('path_csv', '')
-        self.declare_parameter('v_max', 4.0)        # [m/s] top speed on straights
-        self.declare_parameter('a_lat', 3.0)        # [m/s^2] cornering grip used
+        self.declare_parameter('v_max', 10.0)        # [m/s] top speed on straights
+        self.declare_parameter('a_lat', 5.0)        # [m/s^2] cornering grip used
         self.declare_parameter('a_accel', 6.0)      # [m/s^2]
-        self.declare_parameter('a_brake', 4.0)      # [m/s^2]
+        self.declare_parameter('a_brake', 6.0)      # [m/s^2]
         self.declare_parameter('lookahead_min', 0.45)  # [m]
         self.declare_parameter('lookahead_gain', 0.10)  # [s] lookahead grows with speed
         self.declare_parameter('safety_margin', 0.5)    # [m] LiDAR emergency brake
