@@ -12,7 +12,7 @@ faster with **0 collisions**.
 |---|---|---|---|
 | Day 2 | centreline | hand-picked | 21.0 s / weaves, crashes |
 | Day 3 | racing line | hand-picked (Day 2 values) | 19.5 s / crashes |
-| Day 3 | racing line | **tuned by `tune.py`** | **TUNED_RESULT** |
+| Day 3 | racing line | **tuned by `tune.py`** | **18.05 s, 0 hits / 18.52 s, 0 hits** (10 laps; 150 ms delay: 19.50 s, 0 hits) |
 
 ---
 
@@ -189,7 +189,9 @@ Rule: **a collision costs +10 s, more than the racing line saves.** Never keep a
 
 ## Step 7 (optional, 1-2 h): run the ML tuner yourself
 
-I already ran it (Step 1 table, settings now the defaults in `driver.py`), so
+I already ran it (~60 trials; the winner is now the default in `driver.py`:
+`v_max 8.19, a_lat 6.74, a_brake 5.44, lookahead_min 0.38, lookahead_gain 0.29,
+safety_margin 0.24, raceline_inflate 0.40`), so
 this is for understanding, or for re-tuning after a change.
 
 Container tab:

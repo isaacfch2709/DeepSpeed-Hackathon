@@ -40,16 +40,16 @@ class Driver(Node):
 
     def __init__(self):
         super().__init__('driver')
-        # ---- tuning knobs ----------------------------------------------
+        # ---- tuning knobs: values found by tools/tune.py (Optuna TPE, ~60 trials) ----
         self.declare_parameter('use_raceline', True)
         self.declare_parameter('raceline_inflate', 0.40)  # [m] keep the line this far from walls
-        self.declare_parameter('v_max', 10.0)          # [m/s] top speed on straights
-        self.declare_parameter('a_lat', 5.0)           # [m/s^2] cornering grip used
+        self.declare_parameter('v_max', 8.19)          # [m/s] top speed on straights
+        self.declare_parameter('a_lat', 6.74)           # [m/s^2] cornering grip used
         self.declare_parameter('a_accel', 6.0)         # [m/s^2]
-        self.declare_parameter('a_brake', 6.0)         # [m/s^2]
-        self.declare_parameter('lookahead_min', 0.45)  # [m]
-        self.declare_parameter('lookahead_gain', 0.10)  # [s] lookahead grows with speed
-        self.declare_parameter('safety_margin', 0.5)   # [m] LiDAR emergency brake
+        self.declare_parameter('a_brake', 5.44)         # [m/s^2]
+        self.declare_parameter('lookahead_min', 0.38)  # [m]
+        self.declare_parameter('lookahead_gain', 0.29)  # [s] lookahead grows with speed
+        self.declare_parameter('safety_margin', 0.24)   # [m] LiDAR emergency brake
         p = lambda name: self.get_parameter(name).value
 
         centreline_csv = find_map_file('icra26_centerline.csv')
