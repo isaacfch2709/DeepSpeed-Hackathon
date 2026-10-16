@@ -44,9 +44,9 @@ class Driver(Node):
         self.declare_parameter('use_raceline', True)
         self.declare_parameter('raceline_inflate', 0.40)  # [m] keep the line this far from walls
         self.declare_parameter('v_max', 8.19)          # [m/s] top speed on straights
-        self.declare_parameter('a_lat', 6.74)           # [m/s^2] cornering grip used
-        self.declare_parameter('a_accel', 6.0)         # [m/s^2]
-        self.declare_parameter('a_brake', 5.44)         # [m/s^2]
+        self.declare_parameter('a_lat', 7.2)           # [m/s^2] cornering grip used
+        self.declare_parameter('a_accel', 9.5)         # [m/s^2]
+        self.declare_parameter('a_brake', 6.0)         # [m/s^2]
         self.declare_parameter('lookahead_min', 0.38)  # [m]
         self.declare_parameter('lookahead_gain', 0.29)  # [s] lookahead grows with speed
         self.declare_parameter('safety_margin', 0.24)   # [m] LiDAR emergency brake
