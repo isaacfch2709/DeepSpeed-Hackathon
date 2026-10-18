@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="{{LANG}}" data-theme="dark" data-platform="linux">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{TITLE}}</title>
+<meta name="description" content="{{DESCRIPTION}}">
+<meta name="color-scheme" content="dark light">
+<script>
+/* Applied before paint, so the page never flashes the wrong theme or the
+   wrong platform's commands. Dark is the brand default — the identity lives
+   on black — and the platform falls back to the one you appear to be on. */
+(function () {
+  var root = document.documentElement, theme, platform;
+  try {
+    theme = localStorage.getItem("ds-theme");
+    platform = localStorage.getItem("ds-platform");
+  } catch (e) { /* storage blocked */ }
+  root.setAttribute("data-theme", theme === "light" ? "light" : "dark");
+  if (!platform) {
+    var ua = (navigator.userAgentData && navigator.userAgentData.platform) || navigator.platform || "";
+    platform = /mac/i.test(ua) ? "macos" : /win/i.test(ua) ? "windows" : "linux";
+  }
+  root.setAttribute("data-platform", platform);
+})();
+</script>
+<meta name="theme-color" content="#0A0A0B">
+<link rel="icon" type="image/png" href="{{PREFIX}}assets/favicon.png">
+<link rel="apple-touch-icon" href="{{PREFIX}}assets/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="{{PREFIX}}{{TOKENS_CSS}}">
+<link rel="stylesheet" href="{{PREFIX}}{{DOCS_CSS}}">
+</head>
+<body>
+{{HEADER}}
+<main class="page">
+  <section class="hero">
+    <div class="hero-grid" aria-hidden="true"></div>
+    <div class="eyebrow">Error 404 &middot; Off the racing line</div>
+    <h1 class="hero-display">Page <span class="red">not found</span></h1>
+    <p class="hero-sub">That URL is not part of the guide. Pick a track and start from the overview.</p>
+    <div class="hero-act">
+      <a class="btn accent" href="{{PREFIX}}track1/index.html">Track 1</a>
+      <a class="btn ghost" href="{{PREFIX}}track2/index.html">Track 2</a>
+      <a class="btn ghost" href="{{PREFIX}}index.html">Home</a>
+    </div>
+  </section>
+</main>
+{{FOOTER}}
+<script src="{{PREFIX}}{{APP_JS}}" defer></script>
+</body>
+</html>

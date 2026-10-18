@@ -43,3 +43,18 @@ rosbag2_*/
 
 # Written by the CI integrity step if it is ever run inside the checkout
 integrity.txt
+
+# Build output — the site is published to gh-pages, never committed here.
+_site/
+.deploy/
+__pycache__/
+*.pyc
+.venv/
+
+# Track-branch artefacts that survive a `git checkout main` in a shared
+# working tree. Nothing here belongs on this branch.
+simulator/
+race_ws/build/
+race_ws/install/
+race_ws/log/
+results/*.json

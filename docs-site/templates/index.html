@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="{{LANG}}" data-theme="dark" data-platform="linux">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{TITLE}}</title>
+<meta name="description" content="{{DESCRIPTION}}">
+<meta name="color-scheme" content="dark light">
+<meta property="og:title" content="{{TITLE}}">
+<meta property="og:description" content="{{DESCRIPTION}}">
+<meta property="og:type" content="website">
+<script>
+/* Applied before paint, so the page never flashes the wrong theme or the
+   wrong platform's commands. Dark is the brand default — the identity lives
+   on black — and the platform falls back to the one you appear to be on. */
+(function () {
+  var root = document.documentElement, theme, platform;
+  try {
+    theme = localStorage.getItem("ds-theme");
+    platform = localStorage.getItem("ds-platform");
+  } catch (e) { /* storage blocked */ }
+  root.setAttribute("data-theme", theme === "light" ? "light" : "dark");
+  if (!platform) {
+    var ua = (navigator.userAgentData && navigator.userAgentData.platform) || navigator.platform || "";
+    platform = /mac/i.test(ua) ? "macos" : /win/i.test(ua) ? "windows" : "linux";
+  }
+  root.setAttribute("data-platform", platform);
+})();
+</script>
+<meta name="theme-color" content="#0A0A0B">
+<link rel="icon" type="image/png" href="{{PREFIX}}assets/favicon.png">
+<link rel="apple-touch-icon" href="{{PREFIX}}assets/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="{{PREFIX}}{{TOKENS_CSS}}">
+<link rel="stylesheet" href="{{PREFIX}}{{DOCS_CSS}}">
+</head>
+<body>
+<a class="skip" href="#tracks">Skip to the tracks</a>
+{{HEADER}}
+
+<main class="page">
+
+  <section class="hero">
+    <div class="hero-grid" aria-hidden="true"></div>
+    <div class="eyebrow">NTU DeepSpeed &middot; Recruitment Hackathon 26/27</div>
+    <h1 class="hero-display">Drive fast. <span class="red">Don&rsquo;t crash.</span></h1>
+    <p class="hero-sub">{{HERO_LEDE}}</p>
+    <div class="hero-act">
+      <a class="btn accent" href="{{REGISTER_URL}}">{{REGISTER_CTA}}</a>
+      <a class="btn ghost" href="#tracks">Choose a track</a>
+      <a class="btn ghost" href="{{REPO_URL}}">Repository</a>
+    </div>
+    <p class="hero-note">Registration closes <b>{{REGISTER_DEADLINE_FULL}}</b>. One form per team &mdash; you can start reading, and building, before you send it.</p>
+    <div class="hero-pf">
+      <span class="eyebrow">Your platform</span>
+      {{HERO_SWITCH}}
+      <span class="hero-pf__note">Every command on this site follows it.</span>
+    </div>
+  </section>
+
+  <section class="stat-grid">{{STATS}}</section>
+
+  <section class="sec" id="tracks">
+    <div class="sec-head">
+      <div>
+        <div class="sec-num">01 / Pick one</div>
+        <h2 class="sec-h">Choose your track</h2>
+      </div>
+      <p class="sec-lede">Two tracks, two simulators, one problem: get round the circuit faster than everyone else without touching anything. Each track has its own branch and its own guide.</p>
+    </div>
+    <div class="tracks">{{TRACKS}}</div>
+  </section>
+
+  <section class="sec" id="slides">
+    <div class="sec-head">
+      <div>
+        <div class="sec-num">02 / Info talk</div>
+        <h2 class="sec-h">The slides</h2>
+      </div>
+      <p class="sec-lede">{{TALK_LEDE}}</p>
+    </div>
+    {{TALK}}
+  </section>
+
+  <section class="sec">
+    <div class="sec-head">
+      <div>
+        <div class="sec-num">03 / Shared</div>
+        <h2 class="sec-h">The same for both</h2>
+      </div>
+      <p class="sec-lede">Whichever track you take, these do not change. The full rules live in chapter 6 of your track&rsquo;s guide and they are what counts.</p>
+    </div>
+    <div class="rows">{{SHARED}}</div>
+  </section>
+
+  <section class="sec">
+    <div class="sec-head">
+      <div>
+        <div class="sec-num">04 / Contents</div>
+        <h2 class="sec-h">Inside the guide</h2>
+      </div>
+      <p class="sec-lede">Seven chapters, written per track. Jump straight to the chapter you need on either side.</p>
+    </div>
+    <div class="rows">{{CHAPTERS}}</div>
+  </section>
+
+  <section class="sec">
+    <div class="sec-head">
+      <div>
+        <div class="sec-num">05 / Go</div>
+        <h2 class="sec-h">Start here</h2>
+      </div>
+      <p class="sec-lede">Clone once, check out the branch for your track, then follow chapter 1. <a href="{{REGISTER_URL}}">Register your team</a> by {{REGISTER_DEADLINE_FULL}}; submissions close {{DEADLINE_FULL}}.</p>
+    </div>
+    {{QUICK_SWITCH}}
+    <div class="quick">{{QUICKSTART}}</div>
+  </section>
+
+</main>
+{{FOOTER}}
+<script src="{{PREFIX}}{{APP_JS}}" defer></script>
+</body>
+</html>

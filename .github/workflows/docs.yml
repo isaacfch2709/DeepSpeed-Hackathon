@@ -9,10 +9,7 @@
 # a build artefact and is never committed to a source branch.
 #
 # This workflow file is duplicated on all three branches because GitHub runs
-# the copy that lives on the branch you pushed to. Keep the copies in step —
-# and because .github/workflows is part of the protected judging environment,
-# run ./scripts/verify_judging_env.sh --update on each branch after changing
-# it, or every team's integrity check fails on a file they never touched.
+# the copy that lives on the branch you pushed to. Keep the copies in step.
 
 name: Docs
 
