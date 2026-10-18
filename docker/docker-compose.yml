@@ -1,0 +1,55 @@
+# Compose project for the Track 1 racing environment.
+#
+# Do not invoke this directly - install/<os>/run.sh writes docker/.env with the
+# right DISPLAY and profile for your platform and then calls compose for you.
+#
+#   Linux / WSLg : profile "x11"   - renders on the host X server
+#   macOS / any  : profile "novnc" - renders to a browser at localhost:8080
+
+services:
+  sim:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    image: ${IMAGE_NAME:-roboracer_track1}
+    container_name: ${CONTAINER_NAME:-roboracer_track1}
+    hostname: roboracer
+    init: true
+    stdin_open: true
+    tty: true
+    # The gym uses shared memory heavily; the 64 MB default causes numba and
+    # the scan simulator to fail in hard-to-diagnose ways under load.
+    shm_size: "1gb"
+    environment:
+      - DISPLAY=${DISPLAY:-:0}
+      - QT_X11_NO_MITSHM=1
+      - LIBGL_ALWAYS_SOFTWARE=${LIBGL_ALWAYS_SOFTWARE:-0}
+      - ROS_DOMAIN_ID=${ROS_DOMAIN_ID:-0}
+      - ROS_LOCALHOST_ONLY=1
+      - NUMBA_CACHE_DIR=/tmp/numba_cache
+    volumes:
+      # The whole repository, so race_ws, maps and results are shared with the host.
+      - ..:/hackathon
+      - ${X11_SOCKET:-/tmp/.X11-unix}:/tmp/.X11-unix:rw
+    networks:
+      - roboracer
+    command: ["bash"]
+
+  novnc:
+    image: theasp/novnc:latest
+    container_name: ${CONTAINER_NAME:-roboracer_track1}_novnc
+    profiles: ["novnc"]
+    environment:
+      - DISPLAY_WIDTH=${NOVNC_WIDTH:-1600}
+      - DISPLAY_HEIGHT=${NOVNC_HEIGHT:-900}
+      - RUN_XTERM=no
+    ports:
+      - "${NOVNC_PORT:-8080}:8080"
+    networks:
+      roboracer:
+        aliases:
+          - novnc
+
+networks:
+  roboracer:
+    name: ${COMPOSE_PROJECT_NAME:-roboracer_track1}_net

@@ -1,0 +1,8 @@
+[submodule "external/f1tenth_gym"]
+	path = external/f1tenth_gym
+	url = https://github.com/f1tenth/f1tenth_gym.git
+	branch = dev-jax
+[submodule "external/f1tenth_gym_ros"]
+	path = external/f1tenth_gym_ros
+	url = https://github.com/f1tenth/f1tenth_gym_ros.git
+	branch = dev-jazzy

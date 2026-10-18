@@ -1,0 +1,20 @@
+# Python packages your driver needs, one per line, in pip syntax.
+#
+# Whatever is listed here is installed into the Docker image when it is built,
+# so it is available during judging. Anything you use but do not list will not
+# be there: a judged run has no network access. See rule 33 in docs/06-rules.md.
+#
+# Pin versions. "scikit-learn" resolves to whatever is newest on the day the
+# judges build; "scikit-learn==1.3.2" resolves to what you tested.
+#
+#   scikit-learn==1.3.2
+#   networkx==2.6.3
+#
+# CAUTION: the image pins pip 21.3.1 and setuptools 57.5.0 because the
+# simulator's dependencies need them. A package that pulls in a newer
+# setuptools can break the simulator. After adding anything here, rebuild from
+# clean and check the simulator still starts:
+#
+#   ./install/<your-os>/setup.sh --no-cache
+#
+# Also list what you added, and why, in SUBMISSION.md.

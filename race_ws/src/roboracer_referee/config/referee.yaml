@@ -1,0 +1,47 @@
+# Default referee settings. These are the OFFICIAL judging values: the judges
+# run with this file unchanged, so treat any local edits as practice only.
+#
+#   ros2 run roboracer_referee referee --ros-args --params-file <this file>
+#
+referee:
+  ros__parameters:
+    # --- identity -------------------------------------------------------
+    team: "unnamed_team"
+    run_id: ""                    # blank -> UTC timestamp
+    output_dir: "/hackathon/results"
+
+    # --- track ----------------------------------------------------------
+    track: ""                     # blank -> the default in maps/tracks.yaml
+    track_config: ""              # blank -> search the standard locations
+
+    # --- race format ----------------------------------------------------
+    warmup_laps: 1                # granted, not scored
+    timed_laps: 10                # the 10-lap endurance score
+    collision_penalty_s: 10.0     # added to the lap the collision happened on
+    max_collisions: 10            # strictly more than this is a disqualification
+
+    # --- tolerances -----------------------------------------------------
+    # The simulator reports contact ~100 times a second, so collisions are
+    # counted at most this often. A car that stays against a barrier keeps
+    # accruing one collision (and one penalty) per interval for as long as it
+    # stays there - contact is never free after the first hit.
+    collision_interval_s: 1.0
+    # A second crossing sooner than this is sampling noise, not a lap.
+    min_lap_time_s: 2.0
+
+    # --- run limits (simulated seconds) ---------------------------------
+    session_timeout_s: 900.0      # 15 minutes of simulated time for 11 laps
+    stuck_speed_mps: 0.05
+    stuck_timeout_s: 15.0
+
+    # --- startup (wall-clock seconds) -----------------------------------
+    startup_timeout_s: 60.0       # for the simulator's topics to appear
+    driver_timeout_s: 60.0        # for the first /drive message
+    wall_timeout_s: 1800.0        # hard watchdog on the whole run
+    reset_car: true               # teleport to the grid slot before starting
+
+    # --- topics ---------------------------------------------------------
+    odom_topic: "/ego_racecar/odom"
+    collision_topic: "/ego_racecar/collision"
+    sim_time_topic: "/clock"
+    drive_topic: "/drive"

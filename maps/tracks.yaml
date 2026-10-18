@@ -1,0 +1,49 @@
+# Track definition for the NTU DeepSpeed Recruitment Hackathon 26/27 - Track 1.
+#
+# There is exactly one circuit: icra26, the official hackathon track. Both the
+# simulator launch file and the referee read this file, so nothing else needs
+# to know which map is in use:
+#
+#     ros2 launch roboracer_referee simulator.launch.py
+#
+# Fields
+#   map_path           absolute path inside the container, WITHOUT the extension.
+#                      /hackathon is this repository, bind-mounted into the
+#                      container, so this is the copy you edit. The image
+#                      carries /opt/hackathon_maps as a fallback.
+#   map_image_ext      image extension for the map (.pgm here, .png is also fine)
+#   start_pose         [x, y, theta] where the car spawns; must be BEHIND the line
+#   finish_line        [[x1, y1], [x2, y2]] - spans the full width of the track
+#   crossing_direction optional +1/-1 override; inferred from the start heading
+#
+# After any edit, check the numbers against the map image:
+#     ./scripts/track_tool.py validate
+
+default: icra26
+
+tracks:
+  icra26:
+    description: >-
+      The official hackathon circuit. A 17 x 18 m closed course, roughly 78 m
+      per lap, with a 1.8 m wide start/finish straight, two cone slaloms on the
+      right-hand side and a tight hairpin complex in the infield. Cone rows are
+      barriers: the course goes around their ends, never between them.
+
+    map_path: /hackathon/maps/icra26
+    map_image_ext: .pgm
+
+    # On the bottom straight, 3.0 m before the line, facing along +x. The
+    # corridor is 1.80 m wide here and centred on y = -0.01, so the car starts
+    # with 0.90 m of clearance either side.
+    start_pose: [-1.68, -0.01, 0.0]
+
+    # Perpendicular to the straight at x = +1.32, inset 5 cm inside each wall.
+    # The car's centre cannot physically reach that sliver, so a lap can never
+    # be missed by squeezing past an end of the line.
+    finish_line: [[1.32, -0.76], [1.32, 0.89]]
+
+    # Racing direction is counter-clockwise: east along the bottom straight,
+    # north up the right-hand side, west across the top, south down the left.
+    # To reverse the circuit, add pi to start_pose's theta - the crossing
+    # direction is then re-inferred automatically.
+    crossing_direction: -1
